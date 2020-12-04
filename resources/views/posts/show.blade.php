@@ -12,7 +12,7 @@
 @endsection
 
 @section('title-meta')
-    <p>{{ !empty($post->publication_date) ? "Published ".$post->publication_date->format('M d,Y \a\t h:i a') : "Created ".$post->created_at->format('M d,Y \a\t h:i a') }} By {{ $post->author->name }}</p>
+    <p>{{ $post->publication_date->format('M d,Y \a\t h:i a') }} By {{ $post->author->name }}</p>
 @endsection
 
 @section('content')

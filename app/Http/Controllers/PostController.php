@@ -13,11 +13,9 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::where('active', 1)->orderBy('publication_date', 'desc')->paginate(5);
-        
-        $title = 'Latest Posts';
-        
-        return view('home')->withPosts($posts)->withTitle($title);
+        $posts = Post::orderBy('publication_date', 'desc')->paginate(5);
+
+        return view('home')->withPosts($posts)->withTitle('Latest Posts');
     }
 
     public function create(Request $request)
@@ -43,15 +41,8 @@ class PostController extends Controller
         }
 
         $post->author_id = $request->user()->id;
-
-        if ($request->has('save')) {
-            $post->active = 0;
-            $message = 'Post saved successfully';
-        } else {
-            $post->publication_date = Carbon::now();
-            $post->active = 1;
-            $message = 'Post published successfully';
-        }
+        $post->publication_date = Carbon::now();
+        $message = 'Post published successfully';
 
         $post->save();
         return redirect('/' . $post->slug)->withMessage($message);
@@ -100,15 +91,8 @@ class PostController extends Controller
             $post->title = $title;
             $post->description = $request->input('description');
 
-            if ($request->has('save')) {
-                $post->active = 0;
-                $message = 'Post saved successfully';
-                $landing = 'edit/' . $post->slug;
-            } else {
-                $post->active = 1;
-                $message = 'Post updated successfully';
-                $landing = $post->slug;
-            }
+            $message = 'Post updated successfully';
+            $landing = $post->slug;
 
             $post->save();
             return redirect($landing)->withMessage($message);

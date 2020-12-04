@@ -29,12 +29,7 @@
                 {!! old('description') !!}
             </textarea>
         </div>
-        @if($post->active == '1')
-            <input type="submit" name='publish' class="btn btn-success" value="Update" />
-        @else
-            <input type="submit" name='publish' class="btn btn-success" value="Publish" />
-        @endif
-        <input type="submit" name='save' class="btn btn-default" value="Save As Draft" />
+        <input type="submit" name='publish' class="btn btn-success" value="Update" />
         <a href="{{  url('delete/'.$post->id.'?_token='.csrf_token()) }}" class="btn btn-danger">Delete</a>
     </form>
 @endsection

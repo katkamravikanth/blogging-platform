@@ -10,42 +10,15 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /*
-     * Display active posts of a particular user
-     * 
-     * @param int $id
-     * @return view
-     */
-    public function posts($id)
-    {
-        $posts = Post::where('author_id', $id)->where('active', 1)->orderBy('created_at', 'desc')->paginate(5);
-        $title = User::find($id)->name;
-        return view('home')->withPosts($posts)->withTitle($title);
-    }
-
-    /*
      * Display all of the posts of a particular user
      * 
      * @param Request $request
      * @return view
      */
-    public function all_posts(Request $request)
+    public function posts(Request $request)
     {
         $user = $request->user();
-        $posts = Post::where('author_id', $user->id)->orderBy('created_at', 'desc')->paginate(5);
-        $title = $user->name;
-        return view('home')->withPosts($posts)->withTitle($title);
-    }
-
-    /*
-     * Display draft posts of a currently active user
-     * 
-     * @param Request $request
-     * @return view
-     */
-    public function draft_posts(Request $request)
-    {
-        $user = $request->user();
-        $posts = Post::where('author_id', $user->id)->where('active', 0)->orderBy('created_at', 'desc')->paginate(5);
+        $posts = Post::where('author_id', $user->id)->orderBy('publication_date', 'desc')->paginate(5);
         $title = $user->name;
         return view('home')->withPosts($posts)->withTitle($title);
     }
@@ -65,9 +38,7 @@ class UserController extends Controller
             $data['author'] = null;
         }
         $data['posts_count'] = $data['user']->posts->count();
-        $data['posts_active_count'] = $data['user']->posts->where('active', '1')->count();
-        $data['posts_draft_count'] = $data['posts_count'] - $data['posts_active_count'];
-        $data['latest_posts'] = $data['user']->posts->where('active', '1')->take(5);
+        $data['latest_posts'] = $data['user']->posts->take(5);
         
         return view('users.profile', $data);
     }

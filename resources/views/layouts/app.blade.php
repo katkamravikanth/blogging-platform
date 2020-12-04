@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Blog</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ asset('/css/app.css') }}" />
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300" rel="stylesheet" type="text/css" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -15,76 +15,40 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */ 
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-        }
-        
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 450px}
-        
-        /* Set gray background color and 100% height */
-        .sidenav {
-            padding-top: 20px;
-            background-color: #f1f1f1;
-            height: 100%;
-        }
-        
-        /* Set black background color, white text and some padding */
-        footer {
-            background-color: #555;
-            color: white;
-            padding: 15px;
-        }
-        
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-            }
-            .row.content {height:auto;} 
-        }
-    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>                        
-                </button>
-                <a class="navbar-brand" href="{{ url('/') }}">Logo</a>
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav">
-                    <li><a class="active" href="{{ url('/') }}">Home</a></li>
-                    @if (Auth::guest())
-                        <li><a href="{{ url('/auth/login') }}">Login</a></li>
-                        <li><a href="{{ url('/auth/register') }}">Register</a></li>
-                    @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                @if (Auth::user()->can_post())
-                                    <li><a href="{{ url('/add-post') }}">Add new post</a></li>
-                                    <li><a href="{{ url('/user/'.Auth::id().'/posts') }}">My Posts</a></li>
-                                @endif
-                                <li><a href="{{ url('/user/'.Auth::id()) }}">My Profile</a></li>
-                                <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
-                            </ul>
-                        </li>
-                    @endif
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="{{ url('/') }}">LOGO</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
+                @if (Auth::guest())
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/auth/login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/auth/register') }}">Register</a></li>
+                @else
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">{{ Auth::user()->name }} <span class="caret"></span></a>
+                        <div class="dropdown-menu">
+                            @if (Auth::user()->can_post())
+                                <a class="dropdown-item" href="{{ url('/add-post') }}">Add Post</a>
+                                <a class="dropdown-item" href="{{ url('/my-posts') }}">My Posts</a>
+                            @endif
+                            <a class="dropdown-item" href="{{ url('/user/'.Auth::id()) }}">My Profile</a>
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form-header1').submit();">{{__('Logout')}}</a>
+                            <form id="logout-form-header1" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                        </div>
+                    </li>
+                @endif
+            </ul>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container" style="margin-top:30px">
         @if (Session::has('message'))
             <div class="flash alert-info">
                 <p class="panel-body">
@@ -119,16 +83,13 @@
             </div>
         </div>
     </div>
-    <footer class="container-fluid text-center">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <p>Copyright &copy; {{ date('Y') }} | <a href="https://www.katkamravikanth.com">Katkam Ravikanth</a></p>
-            </div>
-        </div>
-    </footer>
+    <div class="jumbotron text-center" style="margin: 5px; padding: 5px;">
+        Copyright &copy; {{ date('Y') }} | <a href="https://www.katkamravikanth.com">Katkam Ravikanth</a>
+    </div>
     <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

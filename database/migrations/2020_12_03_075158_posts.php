@@ -22,7 +22,6 @@ class Posts extends Migration
             $table->string('title')->unique();
             $table->text('description');
             $table->string('slug')->unique();
-            $table->boolean('active');
             $table->dateTime('publication_date', 0)->nullable();
             $table->timestamps();
         });
