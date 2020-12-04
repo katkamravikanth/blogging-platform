@@ -29,14 +29,17 @@ class UserController extends Controller
     public function profile(Request $request, $id)
     {
         $data['user'] = User::find($id);
+
         if (!$data['user']) {
             return redirect('/');
         }
+
         if ($request->user() && $data['user']->id == $request->user()->id) {
             $data['author'] = true;
         } else {
             $data['author'] = null;
         }
+
         $data['posts_count'] = $data['user']->posts->count();
         $data['latest_posts'] = $data['user']->posts->take(5);
         

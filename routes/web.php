@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('update', 'PostController@update');
     Route::get('delete/{id}', 'PostController@destroy');
     Route::get('my-posts', 'UserController@posts');
+    route::get('import-posts', 'PostController@importPosts');
 });
 
 Route::get('user/{id}', 'UserController@profile')->where('id', '[0-9]+');
